@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription au Webinaire</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a3a5c;
+    --accent: #e8613a;
+    --light-bg: #f5f0eb;
+    --card-bg: #ffffff;
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --border: #e2ddd6;
+    --success-bg: #ecfdf5;
+    --success-text: #065f46;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .hero {
+    background: var(--primary);
+    color: white;
+    padding: 3rem 1.5rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(232, 97, 58, 0.18);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(232, 97, 58, 0.1);
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 1.2rem;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1.2;
+    max-width: 680px;
+    margin: 0 auto 1rem;
+  }
+
+  /* ⚠️ PERSONNALISER : titre de votre webinaire */
+  .hero .subtitle {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.75);
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  .event-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .detail-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .detail-pill svg {
+    width: 16px; height: 16px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: -2rem auto 3rem;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    padding: 2rem 2.2rem;
+  }
+
+  .card h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 0.3rem;
+  }
+
+  .card p.desc {
+    font-size: 0.875rem;
+    color: var(--muted);
+    margin-bottom: 1.8rem;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full { grid-column: span 2; }
+
+  label {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+
+  label span.req { color: var(--accent); margin-left: 2px; }
+
+  input, select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    color: var(--text);
+    background: #fafaf8;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26,58,92,0.1);
+    background: #fff;
+  }
+
+  .select-wrapper {
+    position: relative;
+  }
+
+  .select-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--muted);
+    pointer-events: none;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.6rem 0;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1.5rem;
+  }
+
+  .submit-btn:hover { background: #d4522e; }
+  .submit-btn:active { transform: scale(0.99); }
+  .submit-btn:disabled { background: #c9b9b0; cursor: not-allowed; }
+
+  .submit-btn svg {
+    width: 18px; height: 18px;
+    stroke: white; fill: none;
+    stroke-width: 2;
+  }
+
+  .privacy-note {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 1rem;
+  }
+
+  /* Success message */
+  .success-msg {
+    display: none;
+    background: var(--success-bg);
+    border: 1.5px solid #a7f3d0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .success-msg.show { display: block; }
+
+  .success-msg .check-icon {
+    width: 48px; height: 48px;
+    background: #10b981;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+  }
+
+  .success-msg .check-icon svg {
+    width: 24px; height: 24px;
+    stroke: white; fill: none;
+    stroke-width: 2.5;
+  }
+
+  .success-msg h3 {
+    font-family: 'Fraunces', serif;
+    color: var(--success-text);
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .success-msg p {
+    font-size: 0.88rem;
+    color: #047857;
+  }
+
+  /* Loading spinner */
+  .spinner {
+    display: none;
+    width: 20px; height: 20px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 520px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: span 1; }
+    .card { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================
+     SECTION HÉRO : Personnalisez !
+     ============================= -->
+<div class="hero">
+  <div class="badge">WEBINAIRE</div>
+  <!-- ⚠️ CHANGEZ LE TITRE ICI -->
+   
+  <h1> Violences basées sur le genre (exploitation et
+abus sexuels) : impact sur le vivre-ensemble dans la
+communauté</h1>
+ 
+
+  <div class="event-details">
+    <!-- ⚠️ CHANGEZ LA DATE, L'HEURE ET LA DURÉE ICI -->
+    <div class="detail-pill">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      30 Mai 2025 — 18h00 (GMT)
+    </div>
+    
+    <div class="detail-pill">
+      <svg viewBox="0 0 24 24"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+      En ligne 
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>Réservez votre place</h2>
+    <p class="desc">Remplissez ce formulaire pour recevoir le lien de connexion par e-mail.</p>
+
+    <!-- ================================================================
+         FORMULAIRE — Connecté à EmailJS
+         Voir le fichier email-template.html pour le template du mail
+         ================================================================ -->
+    <form id="registrationForm" novalidate>
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="prenom">Prénom <span class="req">*</span></label>
+          <input type="text" id="prenom" name="prenom" placeholder="" required autocomplete="given-name">
+        </div>
+
+        <div class="form-group">
+          <label for="nom">Nom <span class="req">*</span></label>
+          <input type="text" id="nom" name="nom" placeholder="" required autocomplete="family-name">
+        </div>
+
+        <div class="form-group full">
+          <label for="email">Adresse e-mail <span class="req">*</span></label>
+          <input type="email" id="email" name="email" placeholder="" required autocomplete="email">
+        </div>
+
+        <div class="form-group full">
+          <label for="occupation">Occupation / Poste <span class="req">*</span></label>
+          <input type="text" id="occupation" name="occupation" placeholder="" required>
+        </div>
+
+        <div class="form-group">
+          <label for="domaine">Domaine d'activité <span class="req">*</span></label>
+          <div class="select-wrapper">
+            <select id="domaine" name="domaine" required>
+              <option value="" disabled selected>Sélectionner…</option>
+              <!-- ⚠️ ADAPTEZ CES OPTIONS À VOTRE CONTEXTE -->
+              <option>Santé</option>
+              <option>Éducation</option>
+              <option>Technologie</option>
+              <option>Finance</option>
+              <option>Agriculture</option>
+              <option>Environnement</option>
+              <option>Juridique</option>
+              <option>Communication / Média</option>
+              <option>ONG / Association</option>
+              <option>Autre</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="pays">Pays <span class="req">*</span></label>
+          <div class="select-wrapper">
+            <select id="pays" name="pays" required>
+              <option value="" disabled selected>Sélectionner…</option>
+              <option>Sénégal</option>
+              <option>Côte d'Ivoire</option>
+              <option>Mali</option>
+              <option>Burkina Faso</option>
+              <option>Guinée</option>
+              <option>Cameroun</option>
+              <option>Togo</option>
+              <option>Bénin</option>
+              <option>Niger</option>
+              <option>Maroc</option>
+              <option>Algérie</option>
+              <option>Tunisie</option>
+              <option>France</option>
+              <option>Belgique</option>
+              <option>Suisse</option>
+              <option>Canada</option>
+              <option>Autre</option>
+            </select>
+          </div>
+        </div>
+
+      </div><!-- /form-grid -->
+
+      <hr class="divider">
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+        <span id="btnText">S'inscrire</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+
+      <p class="privacy-note">🔒Vos données sont confidentielles et ne seront pas partagées.</p>
+    </form>
+
+    <!-- Message affiché après soumission -->
+    <div class="success-msg" id="successMsg">
+      <div class="check-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3>Inscription confirmée !</h3>
+      <p>Un e-mail de confirmation avec le lien de connexion vient de vous être envoyé. </p>
+    </div>
+
+  </div><!-- /card -->
+</div><!-- /container -->
+
+
+<!-- ================================================================
+     EMAILJS — Envoi d'email côté client (sans serveur)
+     
+     ÉTAPES DE CONFIGURATION :
+     1. Créez un compte gratuit sur https://www.emailjs.com
+     2. Allez dans "Email Services" > Connectez Gmail ou autre
+     3. Allez dans "Email Templates" > Créez un template (voir email-template.html)
+     4. Remplacez les 3 valeurs ci-dessous par vos clés réelles
+     ================================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  // ⚠️ REMPLACEZ CES 3 VALEURS PAR VOS CLÉS EMAILJS
+  const EMAILJS_PUBLIC_KEY  = "1MKBBMOkrKFClINcI";      // ex: "user_abc123..."
+  const EMAILJS_SERVICE_ID  = "service_l30zrzq";      // ex: "service_gmail"
+  const EMAILJS_TEMPLATE_ID = "template_5v3iboo";     // ex: "template_webinaire"
+
+  // ⚠️ LIEN DE VOTRE RÉUNION (Zoom, Google Meet, Teams, etc.)
+  const LIEN_REUNION = "https://zoom.us/j/VOTRE_LIEN_ICI";
+
+  // ⚠️ DÉTAILS DE L'ÉVÉNEMENT pour les liens d'agenda
+  const EVENT = {
+    title:        "Webinaire — Violences basées sur le genre",
+    description: "Rejoignez-nous pour ce webinaire. Lien: " + LIEN_REUNION,
+    location:    "En ligne — " + LIEN_REUNION,
+    // Format: YYYYMMDDTHHMMSSZ (UTC)
+   startUTC: "20260530T180000Z",
+   endUTC:   "20260530T200000Z",   // ⚠️ durée 1h30
+    startLocal:  "2026-05-30T18:00:00",
+    endLocal:    "2026-05-30T20:00:00",
+    timezone:    "Africa/Dakar"
+  };
+
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+ 
+const SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzBlZOtMbQlPJ86UHTmMYykBBx_N3y5eNKu3f0PiGJTxDX3LbXF6gYuD6vAKfLvC83jvA/exec";
+
+  // Génère les liens d'agenda
+  function buildAgendaLinks(firstName, lastName) {
+  const title = encodeURIComponent(EVENT.title);
+  const desc  = encodeURIComponent(EVENT.description);
+  const loc   = encodeURIComponent(EVENT.location);
+
+  const googleLink = `https://calendar.google.com/calendar/render?action=TEMPLATE`
+    + `&text=${title}&dates=${EVENT.startUTC}/${EVENT.endUTC}`
+    + `&details=${desc}&location=${loc}`;
+
+  const outlookLink = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}`
+    + `&startdt=${EVENT.startLocal}&enddt=${EVENT.endLocal}`
+    + `&body=${desc}&location=${loc}`;
+
+  return { googleLink, outlookLink };
+}
+
+  document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const form     = e.target;
+    const btn      = document.getElementById('submitBtn');
+    const spinner  = document.getElementById('spinner');
+    const btnText  = document.getElementById('btnText');
+    const successDiv = document.getElementById('successMsg');
+
+    // Récupération des valeurs
+    const prenom    = form.prenom.value.trim();
+    const nom       = form.nom.value.trim();
+    const email     = form.email.value.trim();
+    const occupation = form.occupation.value.trim();
+    const domaine   = form.domaine.value;
+    const pays      = form.pays.value;
+
+    // Validation basique
+    if (!prenom || !nom || !email || !occupation || !domaine || !pays) {
+      alert("Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert("Veuillez entrer une adresse e-mail valide.");
+      return;
+    }
+
+    // État de chargement
+    btn.disabled = true;
+    spinner.style.display = 'block';
+    btnText.textContent = 'Envoi en cours…';
+
+    // Génération des liens agenda
+    const links = buildAgendaLinks(prenom, nom);
+
+    // Paramètres envoyés au template EmailJS
+    // Les noms (prenom, nom, email...) doivent correspondre
+    // aux variables {{prenom}}, {{nom}} etc. dans votre template EmailJS
+    const templateParams = {
+  prenom,
+  nom,
+  email,
+  occupation,
+  domaine,
+  pays,
+  lien_reunion: LIEN_REUNION,
+  google_link: links.googleLink,
+  outlook_link: links.outlookLink,
+  date_evenement: "Vendredi 30 Mai 2025 à 18h00 (GMT+0)",
+  nom_evenement: EVENT.title
+};
+
+  try {
+
+  await emailjs.send(
+    EMAILJS_SERVICE_ID,
+    EMAILJS_TEMPLATE_ID,
+    templateParams
+  );
+
+  await fetch(SHEET_WEBHOOK_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      prenom,
+      nom,
+      email,
+      occupation,
+      domaine,
+      pays
+    })
+  });
+
+  // Succès
+  form.style.display = 'none';
+  successDiv.classList.add('show');
+
+} catch (error) {
+
+  console.error("Erreur:", error);
+
+  btn.disabled = false;
+  spinner.style.display = 'none';
+  btnText.textContent = 'Confirmer mon inscription';
+
+  alert("Une erreur s'est produite.");
+}
+  });
+  
+</script>
+
+</body>
+</html>
