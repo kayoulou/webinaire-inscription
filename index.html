@@ -429,7 +429,7 @@ communauté</h1>
 
   // GOOGLE SHEET WEBHOOK
   const SHEET_WEBHOOK_URL =
-    "https://script.google.com/macros/s/AKfycbxZGhZzVDF_URS6AAq87VERz5X3utmgcl4kEx8KaB8ht8U2lXkYdaxbbSJxiqidTRtG/exec";
+    "https://script.google.com/macros/s/AKfycbxgqRPKCvQ9PBvHq_Vs1utfqXJM7a9bdG42YyycERoLcitw9nR5ykf01VlmJsKuPA/exec";
   // GÉNÉRATION DES LIENS CALENDRIER
   function buildAgendaLinks() {
 
@@ -476,11 +476,11 @@ communauté</h1>
       const prenom = form.prenom.value.trim();
       const nom = form.nom.value.trim();
       const email = form.email.value.trim();
-      const occupation = form.occupation.value.trim();
+      const organisation = form.organisation.value.trim();
       const pays = form.pays.value.trim();
 
       // VALIDATION
-      if (!prenom || !nom || !email || !occupation || !pays) {
+      if (!prenom || !nom || !email || !organisation || !pays) {
         alert("Veuillez remplir tous les champs.");
         return;
       }
@@ -506,7 +506,7 @@ communauté</h1>
         prenom,
         nom,
         email,
-        occupation,
+        organisation,
         pays,
 
         lien_reunion: LIEN_REUNION,
@@ -536,7 +536,7 @@ communauté</h1>
             prenom,
             nom,
             email,
-            occupation,
+            organisation,
             pays
           })
         });
