@@ -311,7 +311,7 @@
 </head>
 <body>
 
-//Heros
+
 <div class="hero">
   <div class="badge">WEBINAIRE</div>   
   <h1> Violences basées sur le genre (exploitation et
@@ -394,143 +394,169 @@ communauté</h1>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script>
-  const EMAILJS_PUBLIC_KEY  = "1MKBBMOkrKFClINcI";     
-  const EMAILJS_SERVICE_ID  = "service_l30zrzq";      
-  const EMAILJS_TEMPLATE_ID = "template_5v3iboo";     
+  // CONFIG EMAILJS
+  const EMAILJS_PUBLIC_KEY  = "1MKBBMOkrKFClINcI";
+  const EMAILJS_SERVICE_ID  = "service_l30zrzq";
+  const EMAILJS_TEMPLATE_ID = "template_5v3iboo";
 
-  
-  const LIEN_REUNION = "https://meet.jit.si/moderated/246313a7daea7c900b88aa7ade725a47cf8e13a53c8dd67d792449b226bd21c7";
+  // LIEN DE LA RÉUNION
+  const LIEN_REUNION =
+    "https://meet.jit.si/moderated/246313a7daea7c900b88aa7ade725a47cf8e13a53c8dd67d792449b226bd21c7";
 
+  // INFOS ÉVÉNEMENT
   const EVENT = {
-    title:        "Webinaire - Violences basées sur le genre(exploitation et abus sexuels): impact sur le vivre-ensemble dans la communauté",
-    description: "Rejoignez-nous pour ce webinaire. Lien: " + LIEN_REUNION,
-    location:    "En ligne — " + LIEN_REUNION,
-   startUTC: "20260530T180000Z",
-   endUTC:   "20260530T200000Z",   
-    startLocal:  "2026-05-30T18:00:00",
-    endLocal:    "2026-05-30T20:00:00",
-    timezone:    "Africa/Dakar"
+    title:
+      "Webinaire - Violences basées sur le genre (exploitation et abus sexuels)",
+    
+    description:
+      "Rejoignez-nous pour ce webinaire.\nLien : " + LIEN_REUNION,
+
+    location: "En ligne",
+
+    // DATE UTC
+    startUTC: "20260530T180000Z",
+    endUTC: "20260530T200000Z",
+
+    // DATE LOCALE
+    startLocal: "2026-05-30T18:00:00",
+    endLocal: "2026-05-30T20:00:00"
   };
 
+  // INITIALISATION EMAILJS
   emailjs.init(EMAILJS_PUBLIC_KEY);
- 
-const SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzBlZOtMbQlPJ86UHTmMYykBBx_N3y5eNKu3f0PiGJTxDX3LbXF6gYuD6vAKfLvC83jvA/exec";
 
-  // Génère les liens d'agenda
-  function buildAgendaLinks(firstName, lastName) {
-  const title = encodeURIComponent(EVENT.title);
-  const desc  = encodeURIComponent(EVENT.description);
-  const loc   = encodeURIComponent(EVENT.location);
+  // GOOGLE SHEET WEBHOOK
+  const SHEET_WEBHOOK_URL =
+    "https://script.google.com/macros/s/AKfycbzBlZOtMbQlPJ86UHTmMYykBBx_N3y5eNKu3f0PiGJTxDX3LbXF6gYuD6vAKfLvC83jvA/exec";
 
-  const start = EVENT.startUTC.replace(/[-:]/g, "");
-  const end   = EVENT.endUTC.replace(/[-:]/g, "");
+  // GÉNÉRATION DES LIENS CALENDRIER
+  function buildAgendaLinks() {
 
-  const googleLink =
-    "https://calendar.google.com/calendar/render?action=TEMPLATE"
-    + `&text=${title}`
-    + `&dates=${start}/${end}`
-    + `&details=${desc}`
-    + `&location=${loc}`;
+    const title = encodeURIComponent(EVENT.title);
+    const desc  = encodeURIComponent(EVENT.description);
+    const loc   = encodeURIComponent(EVENT.location);
 
-  const outlookLink =
-    `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}`
-    + `&startdt=${EVENT.startLocal}`
-    + `&enddt=${EVENT.endLocal}`
-    + `&body=${desc}`
-    + `&location=${loc}`;
+    const googleLink =
+      `https://calendar.google.com/calendar/render?action=TEMPLATE`
+      + `&text=${title}`
+      + `&dates=${EVENT.startUTC}/${EVENT.endUTC}`
+      + `&details=${desc}`
+      + `&location=${loc}`;
 
-  return { googleLink, outlookLink };
-}
+    const outlookLink =
+      `https://outlook.live.com/calendar/0/deeplink/compose`
+      + `?subject=${title}`
+      + `&startdt=${EVENT.startLocal}`
+      + `&enddt=${EVENT.endLocal}`
+      + `&body=${desc}`
+      + `&location=${loc}`;
 
-  document.getElementById('registrationForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+    return {
+      googleLink,
+      outlookLink
+    };
+  }
 
-    const form     = e.target;
-    const btn      = document.getElementById('submitBtn');
-    const spinner  = document.getElementById('spinner');
-    const btnText  = document.getElementById('btnText');
-    const successDiv = document.getElementById('successMsg');
+  // FORMULAIRE
+  document
+    .getElementById("registrationForm")
+    .addEventListener("submit", async function (e) {
 
-    // Récupération des valeurs
-    const prenom    = form.prenom.value.trim();
-    const nom       = form.nom.value.trim();
-    const email     = form.email.value.trim();
-    const occupation = form.occupation.value.trim();
-    const domaine   = form.domaine.value;
-    const pays      = form.pays.value;
+      e.preventDefault();
 
-    // Validation basique
-    if (!prenom || !nom || !email || !occupation || !domaine || !pays) {
-      alert("Veuillez remplir tous les champs obligatoires.");
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      alert("Veuillez entrer une adresse e-mail valide.");
-      return;
-    }
+      const form = e.target;
 
-    // État de chargement
-    btn.disabled = true;
-    spinner.style.display = 'block';
-    btnText.textContent = 'Envoi en cours…';
+      const btn = document.getElementById("submitBtn");
+      const spinner = document.getElementById("spinner");
+      const btnText = document.getElementById("btnText");
+      const successDiv = document.getElementById("successMsg");
 
-    // Génération des liens agenda
-    const links = buildAgendaLinks(prenom, nom);
+      // RÉCUPÉRATION DES VALEURS
+      const prenom = form.prenom.value.trim();
+      const nom = form.nom.value.trim();
+      const email = form.email.value.trim();
+      const occupation = form.occupation.value.trim();
+      const pays = form.pays.value.trim();
 
-    // Paramètres envoyés au template EmailJS
-    // Les noms (prenom, nom, email...) doivent correspondre
-    // aux variables {{prenom}}, {{nom}} etc. dans votre template EmailJS
-    const templateParams = {
-  prenom,
-  nom,
-  email,
-  occupation,
-  domaine,
-  pays,
-  lien_reunion: LIEN_REUNION,
-  google_link: links.googleLink,
-  outlook_link: links.outlookLink,
-  date_evenement: "Vendredi 30 Mai 2025 à 18h00 (GMT+0)",
-  nom_evenement: EVENT.title
-};
+      // VALIDATION
+      if (!prenom || !nom || !email || !occupation || !pays) {
+        alert("Veuillez remplir tous les champs.");
+        return;
+      }
 
-  try {
+      // EMAIL VALIDE
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  await emailjs.send(
-    EMAILJS_SERVICE_ID,
-    EMAILJS_TEMPLATE_ID,
-    templateParams
-  );
+      if (!emailRegex.test(email)) {
+        alert("Veuillez entrer une adresse e-mail valide.");
+        return;
+      }
 
-  await fetch(SHEET_WEBHOOK_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      prenom,
-      nom,
-      email,
-      occupation,
-      domaine,
-      pays
-    })
-  });
+      // LOADING
+      btn.disabled = true;
+      spinner.style.display = "block";
+      btnText.textContent = "Envoi en cours...";
 
-  // Succès
-  form.style.display = 'none';
-  successDiv.classList.add('show');
+      // LIENS CALENDRIER
+      const links = buildAgendaLinks();
 
-} catch (error) {
+      // PARAMÈTRES EMAILJS
+      const templateParams = {
+        prenom,
+        nom,
+        email,
+        occupation,
+        pays,
 
-  console.error("Erreur:", error);
+        lien_reunion: LIEN_REUNION,
 
-  btn.disabled = false;
-  spinner.style.display = 'none';
-  btnText.textContent = 'Confirmer mon inscription';
+        google_link: links.googleLink,
+        outlook_link: links.outlookLink,
 
-  alert("Une erreur s'est produite.");
-}
-  });
-  
+        date_evenement:
+          "Vendredi 30 Mai 2026 à 18h00 (GMT+0)",
+
+        nom_evenement: EVENT.title
+      };
+
+      try {
+
+        // ENVOI EMAIL
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          templateParams
+        );
+
+        // ENVOI GOOGLE SHEET
+        await fetch(SHEET_WEBHOOK_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            prenom,
+            nom,
+            email,
+            occupation,
+            pays
+          })
+        });
+
+        // SUCCÈS
+        form.style.display = "none";
+        successDiv.classList.add("show");
+
+      } catch (error) {
+
+        console.error("Erreur :", error);
+
+        btn.disabled = false;
+        spinner.style.display = "none";
+        btnText.textContent = "S'inscrire";
+
+        alert("Une erreur s'est produite.");
+      }
+    });
 </script>
 
 </body>
