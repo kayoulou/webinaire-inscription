@@ -296,6 +296,10 @@
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
   }
+  .form-title{
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -321,7 +325,6 @@ communauté</h1>
  
 
   <div class="event-details">
-    <!-- ⚠️ CHANGEZ LA DATE, L'HEURE ET LA DURÉE ICI -->
     <div class="detail-pill">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       30 Mai 2025 — 18h00 (GMT)
@@ -336,16 +339,20 @@ communauté</h1>
 
 <div class="container">
   <div class="card">
-    <h2>Réservez votre place</h2>
-    <p class="desc">Remplissez ce formulaire pour recevoir le lien de connexion par e-mail.</p>
+    
 
     <!-- ================================================================
          FORMULAIRE — Connecté à EmailJS
          Voir le fichier email-template.html pour le template du mail
          ================================================================ -->
     <form id="registrationForm" novalidate>
-      <div class="form-grid">
 
+      <div class="form-title">
+        <h2>Formulaire d'inscription</h2>
+      </div>
+
+      <div class="form-grid">
+    
         <div class="form-group">
           <label for="prenom">Prénom <span class="req">*</span></label>
           <input type="text" id="prenom" name="prenom" placeholder="" required autocomplete="given-name">
@@ -362,55 +369,14 @@ communauté</h1>
         </div>
 
         <div class="form-group full">
-          <label for="occupation">Occupation / Poste <span class="req">*</span></label>
+          <label for="occupation">Organisation/Structure <span class="req">*</span></label>
           <input type="text" id="occupation" name="occupation" placeholder="" required>
         </div>
-
-        <div class="form-group">
-          <label for="domaine">Domaine d'activité <span class="req">*</span></label>
-          <div class="select-wrapper">
-            <select id="domaine" name="domaine" required>
-              <option value="" disabled selected>Sélectionner…</option>
-              <!-- ⚠️ ADAPTEZ CES OPTIONS À VOTRE CONTEXTE -->
-              <option>Santé</option>
-              <option>Éducation</option>
-              <option>Technologie</option>
-              <option>Finance</option>
-              <option>Agriculture</option>
-              <option>Environnement</option>
-              <option>Juridique</option>
-              <option>Communication / Média</option>
-              <option>ONG / Association</option>
-              <option>Autre</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
+        <div class="form-group full">
           <label for="pays">Pays <span class="req">*</span></label>
-          <div class="select-wrapper">
-            <select id="pays" name="pays" required>
-              <option value="" disabled selected>Sélectionner…</option>
-              <option>Sénégal</option>
-              <option>Côte d'Ivoire</option>
-              <option>Mali</option>
-              <option>Burkina Faso</option>
-              <option>Guinée</option>
-              <option>Cameroun</option>
-              <option>Togo</option>
-              <option>Bénin</option>
-              <option>Niger</option>
-              <option>Maroc</option>
-              <option>Algérie</option>
-              <option>Tunisie</option>
-              <option>France</option>
-              <option>Belgique</option>
-              <option>Suisse</option>
-              <option>Canada</option>
-              <option>Autre</option>
-            </select>
-          </div>
+          <input type="text" id="pays" name="pays" placeholder="" required>
         </div>
+
 
       </div><!-- /form-grid -->
 
@@ -480,13 +446,22 @@ const SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzBlZOtMbQlPJ
   const desc  = encodeURIComponent(EVENT.description);
   const loc   = encodeURIComponent(EVENT.location);
 
-  const googleLink = `https://calendar.google.com/calendar/render?action=TEMPLATE`
-    + `&text=${title}&dates=${EVENT.startUTC}/${EVENT.endUTC}`
-    + `&details=${desc}&location=${loc}`;
+  const start = EVENT.startUTC.replace(/[-:]/g, "");
+  const end   = EVENT.endUTC.replace(/[-:]/g, "");
 
-  const outlookLink = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}`
-    + `&startdt=${EVENT.startLocal}&enddt=${EVENT.endLocal}`
-    + `&body=${desc}&location=${loc}`;
+  const googleLink =
+    "https://calendar.google.com/calendar/render?action=TEMPLATE"
+    + `&text=${title}`
+    + `&dates=${start}/${end}`
+    + `&details=${desc}`
+    + `&location=${loc}`;
+
+  const outlookLink =
+    `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}`
+    + `&startdt=${EVENT.startLocal}`
+    + `&enddt=${EVENT.endLocal}`
+    + `&body=${desc}`
+    + `&location=${loc}`;
 
   return { googleLink, outlookLink };
 }
