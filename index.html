@@ -76,7 +76,6 @@
     margin: 0 auto 1rem;
   }
 
-  /* ⚠️ PERSONNALISER : titre de votre webinaire */
   .hero .subtitle {
     font-size: 1rem;
     color: rgba(255,255,255,0.75);
@@ -312,19 +311,13 @@
 </head>
 <body>
 
-<!-- =============================
-     SECTION HÉRO : Personnalisez !
-     ============================= -->
+//Heros
 <div class="hero">
-  <div class="badge">WEBINAIRE</div>
-  <!-- ⚠️ CHANGEZ LE TITRE ICI -->
-   
+  <div class="badge">WEBINAIRE</div>   
   <h1> Violences basées sur le genre (exploitation et
 abus sexuels) : impact sur le vivre-ensemble dans la
 communauté</h1>
- 
-
-  <div class="event-details">
+ <div class="event-details">
     <div class="detail-pill">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       30 Mai 2025 — 18h00 (GMT)
@@ -340,11 +333,7 @@ communauté</h1>
 <div class="container">
   <div class="card">
     
-
-    <!-- ================================================================
-         FORMULAIRE — Connecté à EmailJS
-         Voir le fichier email-template.html pour le template du mail
-         ================================================================ -->
+//formulaire
     <form id="registrationForm" novalidate>
 
       <div class="form-title">
@@ -378,7 +367,7 @@ communauté</h1>
         </div>
 
 
-      </div><!-- /form-grid -->
+      </div>
 
       <hr class="divider">
 
@@ -390,8 +379,7 @@ communauté</h1>
 
       <p class="privacy-note">🔒Vos données sont confidentielles et ne seront pas partagées.</p>
     </form>
-
-    <!-- Message affiché après soumission -->
+//message de succès
     <div class="success-msg" id="successMsg">
       <div class="check-icon">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
@@ -400,37 +388,26 @@ communauté</h1>
       <p>Un e-mail de confirmation avec le lien de connexion vient de vous être envoyé. </p>
     </div>
 
-  </div><!-- /card -->
-</div><!-- /container -->
+  </div>
+</div>
 
 
-<!-- ================================================================
-     EMAILJS — Envoi d'email côté client (sans serveur)
-     
-     ÉTAPES DE CONFIGURATION :
-     1. Créez un compte gratuit sur https://www.emailjs.com
-     2. Allez dans "Email Services" > Connectez Gmail ou autre
-     3. Allez dans "Email Templates" > Créez un template (voir email-template.html)
-     4. Remplacez les 3 valeurs ci-dessous par vos clés réelles
-     ================================================================ -->
+//Gestion mail
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-  // ⚠️ REMPLACEZ CES 3 VALEURS PAR VOS CLÉS EMAILJS
-  const EMAILJS_PUBLIC_KEY  = "1MKBBMOkrKFClINcI";      // ex: "user_abc123..."
-  const EMAILJS_SERVICE_ID  = "service_l30zrzq";      // ex: "service_gmail"
-  const EMAILJS_TEMPLATE_ID = "template_5v3iboo";     // ex: "template_webinaire"
+  const EMAILJS_PUBLIC_KEY  = "1MKBBMOkrKFClINcI";     
+  const EMAILJS_SERVICE_ID  = "service_l30zrzq";      
+  const EMAILJS_TEMPLATE_ID = "template_5v3iboo";     
 
-  // ⚠️ LIEN DE VOTRE RÉUNION (Zoom, Google Meet, Teams, etc.)
-  const LIEN_REUNION = "https://zoom.us/j/VOTRE_LIEN_ICI";
+  
+  const LIEN_REUNION = "https://meet.jit.si/moderated/246313a7daea7c900b88aa7ade725a47cf8e13a53c8dd67d792449b226bd21c7";
 
-  // ⚠️ DÉTAILS DE L'ÉVÉNEMENT pour les liens d'agenda
   const EVENT = {
-    title:        "Webinaire — Violences basées sur le genre",
+    title:        "Webinaire - Violences basées sur le genre",
     description: "Rejoignez-nous pour ce webinaire. Lien: " + LIEN_REUNION,
     location:    "En ligne — " + LIEN_REUNION,
-    // Format: YYYYMMDDTHHMMSSZ (UTC)
    startUTC: "20260530T180000Z",
-   endUTC:   "20260530T200000Z",   // ⚠️ durée 1h30
+   endUTC:   "20260530T200000Z",   
     startLocal:  "2026-05-30T18:00:00",
     endLocal:    "2026-05-30T20:00:00",
     timezone:    "Africa/Dakar"
